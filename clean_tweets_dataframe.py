@@ -13,9 +13,9 @@ class Clean_Tweets:
         remove rows that has column names. This error originated from
         the data collection stage.  
         """
-        unwanted_rows = df[df['retweet_count'] == 'retweet_count' ].index
+        unwanted_rows = df[df['retweet_count'] == 'retweet_count'].index
         df.drop(unwanted_rows, inplace=True)
-        df = df[df['polarity'] != 'polarity']
+        # df = df[df['polarity'] != 'polarity']  # I think this needs modification
         
         return df
 
