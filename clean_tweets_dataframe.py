@@ -16,6 +16,23 @@ class Clean_Tweets:
         unwanted_rows = df[df['retweet_count'] == 'retweet_count'].index
         df.drop(unwanted_rows, inplace=True)
         # df = df[df['polarity'] != 'polarity']  # I think this needs modification
+        ####  Modifications
+        unwanted_rows = df[df['favorite_count'] == 'favorite_count'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['created_at'] == 'created_at'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['id'] == 'id'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['id_str'] == 'id_str'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['source'] == 'source'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['lang'] == 'lang'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['retweet_count'] == 'retweet_count'].index
+        df.drop(unwanted_rows, inplace=True)
+        unwanted_rows = df[df['original_author'] == 'original_author'].index
+        df.drop(unwanted_rows, inplace=True) # Think of a way to automate this
         
         return df
 
