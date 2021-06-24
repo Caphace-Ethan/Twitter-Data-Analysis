@@ -218,7 +218,8 @@ class TweetDfExtractor:
                 lang.append(element['lang'])
 
             else:
-                lang = None
+                language = None
+                lang.append(language)
 
         return lang
 
@@ -235,16 +236,21 @@ class TweetDfExtractor:
                     mentions.append(element['entities']['user_mentions'][0])
 
             except:
-                pass
+                mention = None
+                mentions.append(mention)
 
         return mentions
 
 
     def find_location(self)->list:
-        try:
-            location = self.tweets_list['user']['location']
-        except TypeError:
-            location = ''
+        location = []
+        for element in self.tweets_list:
+            try:
+                location1 = element['user']['location']
+                location.append(location1)
+            except TypeError:
+                location1 = None
+                location.append(location1)
         
         return location
 
@@ -272,6 +278,9 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
+        print(len(created_at),"-",len(source),"-",len(text),"-",len(lang),"-",len(fav_count),
+              "-",len(retweet_count),"-",len(screen_name),"-",len(follower_count),
+              "-",len(friends_count),"-",len(sensitivity),"-",len(hashtags),"-",len(mentions),"-",len(location) )
         data = zip(created_at, source, text, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
         df = pd.DataFrame(data=data, columns=columns)
 
