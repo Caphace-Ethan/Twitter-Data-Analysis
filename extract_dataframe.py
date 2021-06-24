@@ -45,8 +45,8 @@ class TweetDfExtractor:
                 else:
                     favourite_count.append(element['user']['statuses_count'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
 
         return statuses_count
         
@@ -64,23 +64,23 @@ class TweetDfExtractor:
                         text.append(element['quoted_status']['extended_tweet']['full_text'])
                     else:
                         text.append(element['quoted_status']['text'])
-                except Exceptions as e:
-                    print(e)
+                except:
+                    # print(e)
                     text.append(element['text'])
 
         return text
     
-    def find_sentiments(self, text)->list:
-        polarity = []
-        for element in self.tweets_list:
-            if 'retweeted_status' in element:
-                if 'extended_tweet' in element['retweeted_status']:
-                    polarity.append(element['retweeted_status']['extended_tweet']['polarity'])
-                else:
-                    polarity.append(element['retweeted_status']['polarity'])
-            else:
-                polarity.append(element['polarity'])
-        return polarity, self.subjectivity
+    # def find_sentiments(self, text)->list:
+    #     polarity = []
+    #     for element in self.tweets_list:
+    #         if 'retweeted_status' in element:
+    #             if 'extended_tweet' in element['retweeted_status']:
+    #                 polarity.append(element['retweeted_status']['extended_tweet']['polarity'])
+    #             else:
+    #                 polarity.append(element['retweeted_status']['polarity'])
+    #         else:
+    #             polarity.append(element['polarity'])
+    #     return polarity, self.subjectivity
 
     def find_created_time(self)->list:
         created_at = []  # Initialize empty list
@@ -102,8 +102,8 @@ class TweetDfExtractor:
 
                 else:
                     source.append(element['source'])
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
         return source
 
     def find_screen_name(self)->list:
@@ -116,8 +116,8 @@ class TweetDfExtractor:
                 else:
                     screen_name.append(element['user']['screen_name'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
         return screen_name
 
     def find_followers_count(self)->list:
@@ -130,8 +130,8 @@ class TweetDfExtractor:
                 else:
                     followers_count.append(element['user']['followers_count'])
 
-            except Exceptions as e:
-                print(e)
+            except :
+                pass
         return followers_count
 
     def find_friends_count(self)->list:
@@ -144,8 +144,8 @@ class TweetDfExtractor:
                 else:
                     friends_count.append(element['user']['friends_count'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
         return  friends_count
 
 
@@ -155,8 +155,7 @@ class TweetDfExtractor:
             if 'retweeted_status' in element:
                 try:
                     is_sensitive.append(element['retweeted_status']['possibly_sensitive'])
-                except Exceptions as e:
-                    print(e)
+                except:
                     is_sensit = None
                     is_sensitive.append(is_sensit)
             else:
@@ -175,8 +174,8 @@ class TweetDfExtractor:
                 else:
                     favourite_count.append(element['user']['favourites_count'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
 
         return favourite_count
     
@@ -190,8 +189,8 @@ class TweetDfExtractor:
                 else:
                     retweet_count.append(element['retweet_count'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
 
         return retweet_count
 
@@ -207,8 +206,8 @@ class TweetDfExtractor:
                 else:
                     hashtags.append(element['entities']['hashtags'])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
 
         return hashtags
 
@@ -235,8 +234,8 @@ class TweetDfExtractor:
                 else:
                     mentions.append(element['entities']['user_mentions'][0])
 
-            except Exceptions as e:
-                print(e)
+            except:
+                pass
 
         return mentions
 
@@ -255,14 +254,14 @@ class TweetDfExtractor:
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
+        columns = ['created_at', 'source', 'original_text','lang', 'favorite_count', 'retweet_count',
             'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
         
         created_at = self.find_created_time()
         # print(created_at)
         source = self.find_source()
         text = self.find_full_text()
-        polarity, subjectivity = self.find_sentiments(text)
+        # polarity, subjectivity = self.find_sentiments(text)
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
         retweet_count = self.find_retweet_count()
@@ -273,7 +272,7 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
-        data = zip(created_at, source, text, polarity, subjectivity, lang, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+        data = zip(created_at, source, text, polarity, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
