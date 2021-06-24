@@ -37,11 +37,18 @@ class TweetDfExtractor:
     # an example function
     def find_statuses_count(self)->list:
         statuses_count = []
-        count = 0
         for element in self.tweets_list:
-            count = count +element['user']['friends_count']
+            try:
+                if 'retweeted_status' in element:
+                    favourite_count.append(element['retweeted_status']['user']['statuses_count'])
 
-        return statuses_count.append(count)
+                else:
+                    favourite_count.append(element['user']['statuses_count'])
+
+            except Exceptions as e:
+                print(e)
+
+        return statuses_count
         
     def find_full_text(self)->list:
         text = []
@@ -148,7 +155,8 @@ class TweetDfExtractor:
             if 'retweeted_status' in element:
                 try:
                     is_sensitive.append(element['retweeted_status']['possibly_sensitive'])
-                except:
+                except Exceptions as e:
+                    print(e)
                     is_sensit = None
                     is_sensitive.append(is_sensit)
             else:
@@ -216,7 +224,21 @@ class TweetDfExtractor:
         return lang
 
     def find_mentions(self)->list:
-        mentions = ""
+        mentions = []
+        for element in self.tweets_list:
+            try:
+                if 'retweeted_status' in element:
+                    if 'extended_tweet' in element['retweeted_status']:
+                        mentions.append(element['retweeted_status']['extended_tweet']['entities']['user_mentions'][0])
+                    else:
+                        mentions.append(element['retweeted_status']['entities']['user_mentions'][0])
+                else:
+                    mentions.append(element['entities']['user_mentions'][0])
+
+            except Exceptions as e:
+                print(e)
+
+        return mentions
 
 
     def find_location(self)->list:
