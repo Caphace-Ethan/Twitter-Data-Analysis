@@ -28,9 +28,7 @@ class TweetDfExtractor:
     
     Return
     #------
-
     dataframe
-
     """
     def __init__(self, tweets_list):
         
@@ -40,15 +38,15 @@ class TweetDfExtractor:
     def find_statuses_count(self)->list:
         statuses_count = []
         for element in self.tweets_list:
-            try:
-                if 'retweeted_status' in element:
-                    favourite_count.append(element['retweeted_status']['user']['statuses_count'])
+            # try:
+            if 'user' in element:
+                statuses_count.append(element['user']['statuses_count'])
 
-                else:
-                    favourite_count.append(element['user']['statuses_count'])
+            else:
+                statuses_count.append(element['retweeted_status']['user']['statuses_count'])
 
-            except:
-                pass
+            # except:
+            #     pass
 
         return statuses_count
         
@@ -87,11 +85,11 @@ class TweetDfExtractor:
     def find_created_time(self)->list:
         created_at = []  # Initialize empty list
         for element in self.tweets_list:
-            if 'retweeted_status' in element:
-                created_at.append(element['retweeted_status']['created_at'])
+            if 'created_at' in element:
+                created_at.append(element['created_at'])
 
             else:
-                created_at.append(element['created_at'])
+                created_at.append(element['retweeted_status']['created_at'])
 
         return created_at
 
@@ -99,11 +97,11 @@ class TweetDfExtractor:
         source = []
         for element in self.tweets_list:
             try:
-                if 'retweeted_status' in element:
-                    source.append(element['retweeted_status']['source'])
+                if 'source' in element:
+                    source.append(element['source'])
 
                 else:
-                    source.append(element['source'])
+                    source.append(element['retweeted_status']['source'])
             except:
                 pass
         return source
@@ -112,11 +110,11 @@ class TweetDfExtractor:
         screen_name = []
         for element in self.tweets_list:
             try:
-                if 'retweeted_status' in element:
-                    screen_name.append(element['retweeted_status']['user']['screen_name'])
+                if 'user' in element:
+                    screen_name.append(element['user']['screen_name'])
 
                 else:
-                    screen_name.append(element['user']['screen_name'])
+                    screen_name.append(element['retweeted_status']['user']['screen_name'])
 
             except:
                 pass
@@ -126,11 +124,11 @@ class TweetDfExtractor:
         followers_count = []
         for element in self.tweets_list:
             try:
-                if 'retweeted_status' in element:
-                    followers_count.append(element['retweeted_status']['user']['followers_count'])
+                if 'user' in element:
+                    followers_count.append(element['user']['followers_count'])
 
                 else:
-                    followers_count.append(element['user']['followers_count'])
+                    followers_count.append(element['retweeted_status']['user']['followers_count'])
 
             except :
                 pass
@@ -140,11 +138,11 @@ class TweetDfExtractor:
         friends_count = []
         for element in self.tweets_list:
             try:
-                if 'retweeted_status' in element:
-                    friends_count.append(element['retweeted_status']['user']['friends_count'])
+                if 'user' in element:
+                    friends_count.append(element['user']['friends_count'])
 
                 else:
-                    friends_count.append(element['user']['friends_count'])
+                    friends_count.append(element['retweeted_status']['user']['friends_count'])
 
             except:
                 pass
@@ -154,15 +152,18 @@ class TweetDfExtractor:
     def is_sensitive(self)->list:
         is_sensitive = []
         for element in self.tweets_list:
+            # try:
             if 'retweeted_status' in element:
                 try:
                     is_sensitive.append(element['retweeted_status']['possibly_sensitive'])
                 except:
-                    is_sensit = None
-                    is_sensitive.append(is_sensit)
+                    pass
             else:
                 is_sensit = None
                 is_sensitive.append(is_sensit)
+            # except:
+            #     is_sensit = None
+            #     is_sensitive.append(is_sensit)
 
         return is_sensitive
 
@@ -171,10 +172,10 @@ class TweetDfExtractor:
         for element in self.tweets_list:
             try:
                 if 'retweeted_status' in element:
-                    favourite_count.append(element['retweeted_status']['user']['favourites_count'])
+                    favourite_count.append(element['retweeted_status']['favorite_count'])
 
                 else:
-                    favourite_count.append(element['user']['favourites_count'])
+                    favourite_count.append(element['favorite_count'])
 
             except:
                 pass
