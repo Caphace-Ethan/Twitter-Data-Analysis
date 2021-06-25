@@ -6,7 +6,7 @@ from wordcloud import WordCloud
 import plotly.express as px
 from add_data import db_execute_fetch
 
-st.set_page_config(page_title="Day 5", layout="wide")
+st.set_page_config(page_title="Dashboard | Tweeter Data Analysis ", layout="wide")
 
 def loadData():
     query = "select * from TweetInformation"
@@ -22,7 +22,7 @@ def selectHashTag():
 
 def selectLocAndAuth():
     df = loadData()
-    location = st.multiselect("choose Location of tweets", list(df['place_coordinate'].unique()))
+    location = st.multiselect("choose Location of tweets", list(df['place'].unique()))
     lang = st.multiselect("choose Language of tweets", list(df['language'].unique()))
 
     if location and not lang:
@@ -85,10 +85,9 @@ def langPie():
     with colB2:
         st.write(dfLangCount)
 
-
-st.title("Data Display")
+st.markdown("<h1 style='color:#0b4eab;font-size:36px;border-radius:10px;'>Dashboard | Data Visualization for Twitter Data Analysis Project</h1>", unsafe_allow_html=True)
 selectHashTag()
-st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Section Break</p>", unsafe_allow_html=True)
+# st.markdown("<p style='padding:10px; background-color:#000000;color:#00ECB9;font-size:16px;border-radius:10px;'>Section Break</p>", unsafe_allow_html=True)
 selectLocAndAuth()
 st.title("Data Visualizations")
 wordCloud()
