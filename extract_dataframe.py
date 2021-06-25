@@ -71,7 +71,7 @@ class TweetDfExtractor:
         return text
     
     def find_sentiments(self, text)->list:
-        polarity, subjectivity = [], []
+        polarity, subjectivity, sentiment = [], [], []
         tetx = ""
         for element in self.tweets_list:
             if 'retweeted_status' in element:
@@ -91,9 +91,10 @@ class TweetDfExtractor:
             polarity1 = TextBlob(text).polarity
             subjectivity1 = TextBlob(text).subjectivity
             polarity.append(polarity1)
+            sentiment.append("Sentiment(polarity="+str(polarity1)+", subjectivity="+str(subjectivity1))
             subjectivity.append(subjectivity1)
 
-        return polarity, subjectivity
+        return polarity, subjectivity, sentiment
 
     def find_created_time(self)->list:
         created_at = []  # Initialize empty list
@@ -276,15 +277,15 @@ class TweetDfExtractor:
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text','lang', 'favorite_count', 'retweet_count','polarity', 'subjectivity',
+        columns = ['created_at', 'source', 'original_text','lang', 'sentiment','favorite_count', 'retweet_count','polarity', 'subjectivity',
             'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
         
         created_at = self.find_created_time()
         # print(created_at)
         source = self.find_source()
         text = self.find_full_text()
-        polarity, subjectivity = self.find_sentiments(text)
-        print(len(polarity), len(subjectivity))
+        polarity, subjectivity, sentiment= self.find_sentiments(text)
+        print(len(polarity), len(subjectivity),len(sentiment))
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
         retweet_count = self.find_retweet_count()
@@ -298,7 +299,7 @@ class TweetDfExtractor:
         print(len(created_at),"-",len(source),"-",len(text),"-",len(lang),"-",len(fav_count),
               "-",len(retweet_count),"-",len(screen_name),"-",len(follower_count),
               "-",len(friends_count),"-",len(sensitivity),"-",len(hashtags),"-",len(mentions),"-",len(location) )
-        data = zip(created_at, source, text, lang, polarity, subjectivity, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
+        data = zip(created_at, source, text, lang, sentiment, polarity, subjectivity, fav_count, retweet_count, screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
         df = pd.DataFrame(data=data, columns=columns)
 
         if True:
