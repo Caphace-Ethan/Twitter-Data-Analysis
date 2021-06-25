@@ -20,6 +20,3 @@ cache:
 #script:
 
  # - python -m unittest tests.test_extract_dataframe
-=======
- # - python -m unittest tests.test_extract_dataframe
-
