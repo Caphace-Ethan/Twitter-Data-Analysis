@@ -28,11 +28,7 @@ class TweetDfExtractor:
     
     Return
     #------
-<<<<<<< HEAD
-    dataframe ///////
-=======
-    dataframe ////
->>>>>>> 5667b7f044501ddad7fe102e511e3cf7f1e17400
+    dataframe
     """
     def __init__(self, tweets_list):
         
