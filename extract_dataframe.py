@@ -94,7 +94,29 @@ class TweetDfExtractor:
             sentiment.append("Sentiment(polarity="+str(polarity1)+", subjectivity="+str(subjectivity1))
             subjectivity.append(subjectivity1)
 
-        return polarity, subjectivity, sentiment
+        return polarity, subjectivity
+
+    def find_sentiment_two(self, text)->list:
+        sentiment = []
+        tetx = ""
+        for element in self.tweets_list:
+            if 'retweeted_status' in element:
+                if 'extended_tweet' in element['retweeted_status']:
+                    text = element['retweeted_status']['extended_tweet']['full_text']
+                else:
+                    text = element['retweeted_status']['text']
+            else:
+                try:
+                    if 'extended_tweet' in element['quoted_status']:
+                        text = element['quoted_status']['extended_tweet']['full_text']
+                    else:
+                        text = element['quoted_status']['text']
+                except:
+                    # print(e)
+                    text = element['text']
+            sentiment = TextBlob(text).sentiment
+
+        return sentiment
 
     def find_created_time(self)->list:
         created_at = []  # Initialize empty list
@@ -284,7 +306,8 @@ class TweetDfExtractor:
         # print(created_at)
         source = self.find_source()
         text = self.find_full_text()
-        polarity, subjectivity, sentiment= self.find_sentiments(text)
+        polarity, subjectivity = self.find_sentiments(text)
+        sentiment = find_sentiment_two(text)
         print(len(polarity), len(subjectivity),len(sentiment))
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
