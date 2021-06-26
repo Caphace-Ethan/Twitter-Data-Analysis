@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from textblob import TextBlob
+import re
 
 def read_json(json_file: str)->list:
     """
@@ -236,18 +237,13 @@ class TweetDfExtractor:
 
     def find_hashtags(self)->list:
         hashtags =[]
-        for element in self.tweets_list:
+        text = self.find_full_text()
+        for element in text:
             try:
-                if 'retweeted_status' in element:
-                    if 'extended_tweet' in element['retweeted_status']:
-                        hashtags.append(element['retweeted_status']['extended_tweet']['entities']['hashtags'])
-                    else:
-                        hashtags.append(element['retweeted_status']['entities']['hashtags'])
-                else:
-                    hashtags.append(element['entities']['hashtags'])
-
+                hashtags.append(re.findall('(#[A-Za-z]+[A-Za-z0-9-_]+)', element))
             except:
-                pass
+                hash = None
+                hashtags.append(hash)
 
         return hashtags
 
