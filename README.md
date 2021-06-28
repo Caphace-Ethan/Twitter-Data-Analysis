@@ -1,10 +1,12 @@
 # Africa Covid19 Twitter-Data Analysis
 
+## (Day 4 & 5 Assignements)
+
 This Project is divided into two parts
 1. Business understanding & Data Processing
 2. Data Analysis (Topic Modelling and Sentiment Analysis)
 
-## 1. Business understanding & Data Processing
+## 1. Business understanding & Data Processing -- (Day 4 Assignment)
 This Involves; Uderstanding requirements for the project/Task, Data Collection and Understanding, and data preparation.
 > Data source is Twitter Social Media,
 > Data preparation involves the following; i. Handling NA, ii. Handling missing value, iii. Data standardization/ scaling of data, iv. Feature engineering, v. Dimensionality reduction
@@ -22,3 +24,6 @@ This Involves; Uderstanding requirements for the project/Task, Data Collection a
 9. All tests passed.
 
 ### Some outputs screenshots of the these tasks are included in results folder
+
+
+## 2. Data Analysis (Topic Modelling and Sentiment Analysis) -- (Day 5 Assignment)
