@@ -1,6 +1,6 @@
 # Africa Covid19 Twitter-Data Analysis
 
-## (Day 4 & 5 Assignements)
+## (Day 4 & 5 Assignments)
 
 This Project is divided into two parts
 1. Business understanding & Data Processing
