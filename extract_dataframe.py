@@ -335,7 +335,6 @@ class TweetDfExtractor:
         text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(text)
         sentiment = self.find_sentiment_two(text)
-        print(len(polarity), len(subjectivity),len(sentiment))
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
         retweet_count = self.find_retweet_count()
@@ -346,6 +345,7 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
+        print(">",len(polarity), len(subjectivity),len(sentiment))
         print(len(created_at),"-",len(source),"-",len(text),"-",len(lang),"-",len(fav_count),
               "-",len(retweet_count),"-",len(screen_name),"-",len(follower_count),
               "-",len(friends_count),"-",len(sensitivity),"-",len(hashtags),"-",len(mentions),"-",len(location) )
@@ -355,7 +355,7 @@ class TweetDfExtractor:
         if True:
             try:
                 df.to_csv('processed_tweet_data.csv', index=False)
-                print('File Successfully Saved.!!!')
+                print('Data prepared and Saved in processed_tweet_data.csv File Successfully!!!')
             except Exception as e:
                 print("File save Failed!", e)
         return df
