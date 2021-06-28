@@ -39,15 +39,16 @@ class TweetDfExtractor:
     def find_statuses_count(self)->list:
         statuses_count = []
         for element in self.tweets_list:
-            # try:
-            if 'user' in element:
-                statuses_count.append(element['user']['statuses_count'])
+            try:
+                if 'user' in element:
+                    statuses_count.append(element['user']['statuses_count'])
 
-            else:
-                statuses_count.append(element['retweeted_status']['user']['statuses_count'])
+                else:
+                    statuses_count.append(element['retweeted_status']['user']['statuses_count'])
 
-            # except:
-            #     pass
+            except Exception as e:
+                print(e)
+                statuses_count.append(None)
 
         return statuses_count
         
@@ -55,19 +56,26 @@ class TweetDfExtractor:
         text = []
         for element in self.tweets_list:
             if 'retweeted_status' in element:
-                if 'extended_tweet' in element['retweeted_status']:
-                    text.append(element['retweeted_status']['extended_tweet']['full_text'])
-                else:
-                    text.append(element['retweeted_status']['text'])
+                try:
+                    if 'extended_tweet' in element['retweeted_status']:
+                        text.append(element['retweeted_status']['extended_tweet']['full_text'])
+                    else:
+                        text.append(element['retweeted_status']['text'])
+                except Exception as e:
+                    print(e)
+
             else:
                 try:
                     if 'extended_tweet' in element['quoted_status']:
                         text.append(element['quoted_status']['extended_tweet']['full_text'])
                     else:
                         text.append(element['quoted_status']['text'])
-                except:
-                    # print(e)
-                    text.append(element['text'])
+                except Exception as e:
+                    print(e)
+                    if 'text' in element:
+                        text.append(element['text'])
+                    else:
+                        text.append(None)
 
         return text
     
@@ -76,10 +84,13 @@ class TweetDfExtractor:
         tetx = ""
         for element in self.tweets_list:
             if 'retweeted_status' in element:
-                if 'extended_tweet' in element['retweeted_status']:
-                    text = element['retweeted_status']['extended_tweet']['full_text']
-                else:
-                    text = element['retweeted_status']['text']
+                try:
+                    if 'extended_tweet' in element['retweeted_status']:
+                        text = element['retweeted_status']['extended_tweet']['full_text']
+                    else:
+                        text = element['retweeted_status']['text']
+                except Exception as e:
+                    print(e)
             else:
                 try:
                     if 'extended_tweet' in element['quoted_status']:
@@ -102,10 +113,13 @@ class TweetDfExtractor:
         tetx = ""
         for element in self.tweets_list:
             if 'retweeted_status' in element:
-                if 'extended_tweet' in element['retweeted_status']:
-                    text = element['retweeted_status']['extended_tweet']['full_text']
-                else:
-                    text = element['retweeted_status']['text']
+                try:
+                    if 'extended_tweet' in element['retweeted_status']:
+                        text = element['retweeted_status']['extended_tweet']['full_text']
+                    else:
+                        text = element['retweeted_status']['text']
+                except Exception as e:
+                    print(e)
             else:
                 try:
                     if 'extended_tweet' in element['quoted_status']:
@@ -123,11 +137,15 @@ class TweetDfExtractor:
     def find_created_time(self)->list:
         created_at = []  # Initialize empty list
         for element in self.tweets_list:
-            if 'created_at' in element:
-                created_at.append(element['created_at'])
+            try:
+                if 'created_at' in element:
+                    created_at.append(element['created_at'])
 
-            else:
-                created_at.append(element['retweeted_status']['created_at'])
+                else:
+                    created_at.append(element['retweeted_status']['created_at'])
+            except Exception as e:
+                print(e)
+                created_at.append(None)
 
         return created_at
 
@@ -140,8 +158,10 @@ class TweetDfExtractor:
 
                 else:
                     source.append(element['retweeted_status']['source'])
-            except:
-                pass
+            except Exception as e:
+                print(e)
+                source.append(None)
+                
         return source
 
     def find_screen_name(self)->list:
@@ -154,8 +174,10 @@ class TweetDfExtractor:
                 else:
                     screen_name.append(element['retweeted_status']['user']['screen_name'])
 
-            except:
-                pass
+            except Exception as e:
+                print(e)
+                screen_name.append(None)
+
         return screen_name
 
     def find_followers_count(self)->list:
@@ -168,8 +190,10 @@ class TweetDfExtractor:
                 else:
                     followers_count.append(element['retweeted_status']['user']['followers_count'])
 
-            except :
-                pass
+            except Exception as e:
+                print(e)
+                followers_count.append(None)
+
         return followers_count
 
     def find_friends_count(self)->list:
@@ -182,8 +206,9 @@ class TweetDfExtractor:
                 else:
                     friends_count.append(element['retweeted_status']['user']['friends_count'])
 
-            except:
-                pass
+            except Exception as e:
+                print(e)
+                friends_count.append(None)
         return  friends_count
 
 
@@ -194,14 +219,12 @@ class TweetDfExtractor:
             if 'retweeted_status' in element:
                 try:
                     is_sensitive.append(element['retweeted_status']['possibly_sensitive'])
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
+
             else:
                 is_sensit = None
                 is_sensitive.append(is_sensit)
-            # except:
-            #     is_sensit = None
-            #     is_sensitive.append(is_sensit)
 
         return is_sensitive
 
@@ -215,8 +238,9 @@ class TweetDfExtractor:
                 else:
                     favourite_count.append(element['favorite_count'])
 
-            except:
-                pass
+            except Exception as e:
+                print(e)
+                favourite_count.append(None)
 
         return favourite_count
     
@@ -230,8 +254,8 @@ class TweetDfExtractor:
                 else:
                     retweet_count.append(element['retweet_count'])
 
-            except:
-                pass
+            except Exception as e:
+                print(e)
 
         return retweet_count
 
@@ -241,7 +265,8 @@ class TweetDfExtractor:
         for element in text:
             try:
                 hashtags.append(re.findall('(#[A-Za-z]+[A-Za-z0-9-_]+)', element))
-            except:
+            except Exception as e:
+                print(e)
                 hash = None
                 hashtags.append(hash)
 
@@ -250,12 +275,16 @@ class TweetDfExtractor:
     def find_lang(self)->list:
         lang = []
         for element in self.tweets_list:
-            if 'lang' in element:
-                lang.append(element['lang'])
+            try:
+                if 'lang' in element:
+                    lang.append(element['lang'])
 
-            else:
-                language = None
-                lang.append(language)
+                else:
+                    language = None
+                    lang.append(language)
+            except Exception as e:
+                print(e)
+                lang.append(None)
 
         return lang
 
@@ -271,7 +300,8 @@ class TweetDfExtractor:
                 else:
                     mentions.append(element['entities']['user_mentions'][0])
 
-            except:
+            except Exception as e:
+                print(e)
                 mention = None
                 mentions.append(mention)
 
@@ -305,7 +335,6 @@ class TweetDfExtractor:
         text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(text)
         sentiment = self.find_sentiment_two(text)
-        print(len(polarity), len(subjectivity),len(sentiment))
         lang = self.find_lang()
         fav_count = self.find_favourite_count()
         retweet_count = self.find_retweet_count()
@@ -316,6 +345,7 @@ class TweetDfExtractor:
         hashtags = self.find_hashtags()
         mentions = self.find_mentions()
         location = self.find_location()
+        print(">",len(polarity), len(subjectivity),len(sentiment))
         print(len(created_at),"-",len(source),"-",len(text),"-",len(lang),"-",len(fav_count),
               "-",len(retweet_count),"-",len(screen_name),"-",len(follower_count),
               "-",len(friends_count),"-",len(sensitivity),"-",len(hashtags),"-",len(mentions),"-",len(location) )
@@ -323,9 +353,11 @@ class TweetDfExtractor:
         df = pd.DataFrame(data=data, columns=columns)
 
         if True:
-            df.to_csv('processed_tweet_data.csv', index=False)
-            print('File Successfully Saved.!!!')
-        
+            try:
+                df.to_csv('processed_tweet_data.csv', index=False)
+                print('Data prepared and Saved in processed_tweet_data.csv File Successfully!!!')
+            except Exception as e:
+                print("File save Failed!", e)
         return df
 
                 
@@ -333,6 +365,7 @@ if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
     columns = ['created_at', 'source', 'original_text','clean_text', 'sentiment','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
     'original_author', 'screen_count', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
+    
     tweets_length, tweet_list = read_json("data/covid19.json")
     tweet = TweetDfExtractor(tweet_list)
     tweet_df = tweet.get_tweet_df()
